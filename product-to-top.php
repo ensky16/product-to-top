@@ -15,10 +15,10 @@
  */
 
 
-//remove_action('woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open');
-//add_action( 'woocommerce_before_shop_loop','make_prodcut_to_the_top', -1);
+remove_action('woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open');
+add_action( 'woocommerce_before_shop_loop','make_prodcut_to_the_top', -1);
 
-add_action( 'woocommerce_after_shop_loop','make_prodcut_to_the_top' );
+//add_action( 'woocommerce_after_shop_loop','make_prodcut_to_the_top' );
 
 //add_filter( 'woocommerce_before_shop_loop','make_prodcut_to_the_top' );
 
