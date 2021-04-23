@@ -13,6 +13,9 @@
  * Text Domain:       my-basics-plugin
  * Domain Path:       /languages
  */
+ 
+function removeAllAction()
+{
 
 remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10 );
 remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
@@ -20,9 +23,9 @@ remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 )
 remove_action( 'woocommerce_archive_description', 'woocommerce_taxonomy_archive_description', 10 );
 remove_action( 'woocommerce_archive_description', 'woocommerce_product_archive_description', 10 );
  
-remove_action( 'woocommerce_before_shop_loop', 'woocommerce_output_all_notices', 10 );
-remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
-remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_output_all_notices', 10-1 );
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20-1 );
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30-1 );
  
 remove_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 ); 
  
@@ -41,15 +44,154 @@ remove_action( 'woocommerce_after_shop_loop', 'woocommerce_pagination', 10 );
  
 remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
 
+}
 
-add_action( 'woocommerce_before_shop_loop','make_prodcut_to_the_top', -1);
+/*
+function removeLoopStart()
+{
+    woocommerce_product_loop_start([bool $echo = false ]) : string
+    
+    woocommerce_product_loop_end([bool $echo = false ]) : string
+}
+*/
+
+
+//add_action( 'init', 'removeLoopStart');
+
+//wc_reset_loop();
+
+
+/*add_filter('woocommerce_product_is_visible', function($is_visible, $id) {
+                $is_visible = false;
+                return $is_visible;
+            }, 10,2);
+            */
+
+add_filter( 'woocommerce_show_page_title', '__return_false' );
+remove_action( 'woocommerce_before_shop_loop', 'wc_print_notices', 10 );
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_result_count', 20 );
+remove_action( 'woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30 );
 
 //add_action( 'woocommerce_after_shop_loop','make_prodcut_to_the_top' );
 
 //add_filter( 'woocommerce_before_shop_loop','make_prodcut_to_the_top' );
 
+//test start
+//add_action( 'pre_get_posts', 'bbloomer_remove_products_from_shop_page' );
+
+function bbloomer_remove_products_from_shop_page( $q ) {
+
+    if ( ! $q->is_main_query() ) return;
+    if ( ! $q->is_post_type_archive() ) return;
+
+    if ( ! is_admin() && is_shop() ) {
+
+
+        $q->set( 'tax_query', array(array(
+            'taxonomy' => 'product_cat',
+            'field' => 'slug',
+            'terms' => array( 'null' ),
+            'operator' => 'IN'
+        )));
+        
+
+    }
+
+    remove_action( 'pre_get_posts', 'bbloomer_remove_products_from_shop_page' );
+
+}
+
+//****222
+/**
+ * Exclude products from a particular category on the shop page
+ */
+function custom_pre_get_posts_query( $q ) {
+
+    $tax_query = (array) $q->get( 'tax_query' );
+
+    $tax_query[] = array(
+           'taxonomy' => 'product_cat',
+           'field' => 'slug',
+           'terms' => array( 'clothing' ), // Don't display products in the clothing category on the shop page.
+           'operator' => 'IN'
+    );
+
+
+    $q->set( 'tax_query', $tax_query );
+
+}
+//add_action( 'woocommerce_product_query', 'custom_pre_get_posts_query' );  
+
+
+
+//add_action( 'woocommerce_product_query','themelocation_product_query' );
+
+
+//*****3333
+
+/*
+   function wc_no_products_found() 
+  {
+      if ( is_shop() ) {echo '<style>p.woocommerce-info{display:none}</style';}
+    }
+    */
+
+//test end
+
+//test 1
+ // Reset query 
+//wp_reset_query();
+
+/*
+add_action( 'woocommerce_product_query', 'hide_specific_products_from_shop', 20, 2 );
+function hide_specific_products_from_shop( $q, $query ) {
+    if( is_admin() && WC()->cart->is_empty() )
+        return;
+
+    // HERE Set the product IDs in the array
+    $targeted_ids = array( 1122334455, 6107, 14202, 14203 );
+
+    $products_in_cart = array();
+
+    // Loop through cart items
+    foreach( WC()->cart->get_cart() as $cart_item ){
+        if( in_array( $cart_item['product_id'], $targeted_ids ) ){
+            // When any defined product is found we add it to an array
+            $products_in_cart[] = $cart_item['product_id'];
+        }
+    }
+    // We remove the matched products from woocommerce lopp
+    if( count( $products_in_cart ) > 0){
+        $q->set( 'post__in', $products_in_cart );
+    }
+}
+*/
+//test 2
+
+
+function file_replace() {
+
+    $plugin_dir = plugin_dir_path( __FILE__ ) . 'library/front-page.php';
+    $theme_dir = get_stylesheet_directory() . '/front-page.php';
+
+    if (!copy($plugin_dir, $theme_dir)) {
+        echo "failed to copy $plugin_dir to $theme_dir...\n";
+    }
+}
+
+add_action( 'wp_head', 'file_replace' );
+ 
+//add_action( 'woocommerce_before_shop_loop','make_prodcut_to_the_top', 1);
+add_action( 'woocommerce_after_shop_loop','make_prodcut_to_the_top' );
+
 function make_prodcut_to_the_top()
 {
+
+
+ echo get_template_directory_uri();   
+ 
+ //wp_reset_query();
+ //	wp_reset_postdata();
 	woocommerce_product_loop_start();
 
 	
@@ -83,6 +225,7 @@ function make_prodcut_to_the_top()
 	//	echo __( 'No products found' );
 	}
  
+// add_action( 'pre_get_posts', '$loop' );
 	
 	//2nd display product
 	 $paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
@@ -125,6 +268,8 @@ function make_prodcut_to_the_top()
 */
 
 	woocommerce_product_loop_end();
+	
+ 
 }
 
 
