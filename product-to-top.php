@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name:       Product To Top
- * Plugin URI:        https://example.com/plugins/the-basics/
+ * Plugin URI:        https://ensky.tech
  * Description:       make the specific product to the top according to the URL parameters
  * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.2
  * Author:            ensky
- * Author URI:        https://author.example.com/
+ * Author URI:        https://ensky.tech
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       my-basics-plugin
