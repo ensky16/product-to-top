@@ -1,4 +1,6 @@
-<?php
+<?php   // do not copy this "<?php"
+
+
 
 /**
  * Plugin Name:       Product To Top,  this file used to goya theme
@@ -126,6 +128,7 @@
                 }
         }
         
+        wp_reset_postdata();
     
         //first display the top product
         $args01 = array(
@@ -141,15 +144,17 @@
         } else {
            //echo __( 'No products found, debug001' );
         }
+        wp_reset_postdata();
      
         //2nd display the remaining product
         $paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+        
+        //for args, pls read:https://developer.wordpress.org/reference/classes/wp_query/
         $args = array(
             'post_type' => 'product',
-            'post__not_in'=>$exclude_ids_array,
-             // 'posts_per_page' => 55
-            //'posts_per_page' => '-1',  //parameter "-1" means fetch all the post
-             // 'posts_per_archive_page'=>'16',
+            'post__not_in'=>$exclude_ids_array,   // use post ids. Specify post NOT to retrieve.
+             // 'posts_per_page' => 55     //parameter "-1" means fetch all the post
+             // 'posts_per_archive_page'=>'16',  //(int) – number of posts to show per page – on archive pages only
              // 'paged' => 10,
              // 'orderby' => $orderBy,
              'paged' => $paged,
@@ -186,6 +191,9 @@
         make_prodcut_to_the_top($inputSku, $inputProductId);
     }
 			  
-?>
+ 				
+					
+
+
 					
 					
