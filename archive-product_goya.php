@@ -1,8 +1,29 @@
 <?php
 
+/**
+ * Plugin Name:       Product To Top,  this file used to goya theme
+ * Plugin URI:        https://ensky.tech
+ * Description:       make the specific product to the top according to the URL parameters
+ * Version:           1.0.0
+ * Requires at least: 5.2
+ * Requires PHP:      7.2
+ * Author:            ensky
+ * Author URI:        https://ensky.tech
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * How  to use ?
+ * 1. find the "woocommerce_product_loop_start();" code from archive-product.php file, comment it until "woocommerce_product_loop_end()"
+ * 2. copy all the code of this file
+ * 3. paste to archive-product.php file
+ * @date 2021.7.8
+ * @auther ensky
+ * @web
+ *
+ */
+
     /*
     woocommerce_product_loop_start();
-
     if ( wc_get_loop_prop( 'total' ) ) {
         while ( have_posts() ) {
             the_post();
@@ -12,9 +33,8 @@
             wc_get_template_part( 'content', 'product' );
         }
     }
-
     woocommerce_product_loop_end();
-        */
+    */
 
     function original_product_display()
     {
@@ -127,7 +147,7 @@
         $args = array(
             'post_type' => 'product',
             'post__not_in'=>$exclude_ids_array,
-             //    'posts_per_page' => 55
+             // 'posts_per_page' => 55
             //'posts_per_page' => '-1',  //parameter "-1" means fetch all the post
              // 'posts_per_archive_page'=>'16',
              // 'paged' => 10,
